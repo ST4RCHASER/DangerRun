@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="DangerRun">
+    <output-path>$PROJECT_DIR$/out/artifacts/DangerRun</output-path>
+    <root id="archive" name="DangerRun.jar">
+      <element id="module-output" name="DangerRun" />
+      <element id="file-copy" path="$PROJECT_DIR$/plugin.yml" />
+    </root>
+  </artifact>
+</component>

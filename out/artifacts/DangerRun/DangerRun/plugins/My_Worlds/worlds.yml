@@ -1,0 +1,49 @@
+Lobby:
+  loaded: true
+  keepSpawnLoaded: true
+  environment: normal
+  chunkGenerator: ''
+  gamemode: NONE
+  forcedRespawn: false
+  rememberlastplayerpos: false
+  pvp: true
+  operators: []
+  deniedCreatures: []
+  hunger: true
+  formIce: true
+  formSnow: true
+  difficulty: NORMAL
+  reloadWhenEmpty: false
+  bedRespawnEnabled: true
+  spawn:
+    world: Lobby
+    x: -240.0
+    y: 64.0
+    z: 252.0
+    yaw: 0.0
+    pitch: 0.0
+game_world:
+  loaded: true
+  keepSpawnLoaded: true
+  environment: normal
+  chunkGenerator: ''
+  gamemode: NONE
+  forcedRespawn: false
+  rememberlastplayerpos: false
+  pvp: true
+  operators: []
+  deniedCreatures: []
+  hunger: true
+  formIce: true
+  formSnow: true
+  difficulty: NORMAL
+  reloadWhenEmpty: false
+  bedRespawnEnabled: true
+  spawn:
+    world: game_world
+    x: 1.0
+    y: 4.0
+    z: 0.0
+    yaw: 0.0
+    pitch: 0.0
+

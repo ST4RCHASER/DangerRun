@@ -1,0 +1,12 @@
+name: DangerRun
+version: 1.0.0-SNAPSHOT-b0
+description: A Simple minigames plugin
+authors: [Karen,_StarChaser]
+api-version: 1.13
+main: me.starchaser.dangerrun.core
+
+commands:
+  dangerrun:
+    description: DangerRun cmd
+    usage: /<command> args
+    aliases: [dr]

@@ -1,0 +1,143 @@
+# This is the main configuration file for Spigot.
+# As you can see, there's tons to configure. Some options may impact gameplay, so use
+# with caution, and make sure you know what each option does before configuring.
+# For a reference for any variable inside this file, check out the Spigot wiki at
+# http://www.spigotmc.org/wiki/spigot-configuration/
+# 
+# If you need help with the configuration or have any questions related to Spigot,
+# join us at the IRC or drop by our forums and leave a post.
+# 
+# IRC: #spigot @ irc.spi.gt ( http://www.spigotmc.org/pages/irc/ )
+# Forums: http://www.spigotmc.org/
+
+config-version: 8
+settings:
+  debug: false
+  save-user-cache-on-stop-only: false
+  bungeecord: false
+  late-bind: false
+  sample-count: 12
+  player-shuffle: 0
+  user-cache-size: 1000
+  netty-threads: 4
+  timeout-time: 60
+  restart-on-crash: true
+  restart-script: 01.bat
+  int-cache-limit: 1024
+  attribute:
+    maxHealth:
+      max: 2048.0
+    movementSpeed:
+      max: 2048.0
+    attackDamage:
+      max: 2048.0
+  filter-creative-items: true
+  moved-wrongly-threshold: 0.0625
+  moved-too-quickly-threshold: 100.0
+commands:
+  tab-complete: 0
+  log: true
+  spam-exclusions:
+  - /skill
+  replace-commands:
+  - setblock
+  - summon
+  - testforblock
+  - tellraw
+  silent-commandblock-console: false
+messages:
+  whitelist: §eยังไม่พร้อมให้เข้าเล่นจ้า
+  unknown-command: '§7Command: §cไม่พบคำสั่งนี้ ถ้าสงสัยเกี่ยวกับคำสั่งลองพิมพ์ /help
+    เพื่อตรวจสอบคำสั่งได้นะ'
+  server-full: §cเซิร์ฟเวอร์เติม โปรดรอว่าง
+  outdated-client: §cตัวเกมเก่าเกินไป โปรใช้เวอร์ชั่น {0}
+  outdated-server: §cตัวเกมใหม่ไป โปรดใช้เวอร์ชั่น {0}
+  restart: §bรีบูทเซิร์ฟเวอร์ รอประเดี่ยว
+stats:
+  disable-saving: false
+  forced-stats: {}
+world-settings:
+  default:
+    verbose: true
+    merge-radius:
+      item: 0
+      exp: 0
+    item-despawn-rate: 6000
+    chunks-per-tick: 650
+    clear-tick-list: false
+    enable-zombie-pigmen-portal-spawns: false
+    arrow-despawn-rate: 1200
+    view-distance: 5
+    wither-spawn-sound-radius: 0
+    hanging-tick-frequency: 100
+    zombie-aggressive-towards-villager: false
+    seed-village: 10387312
+    seed-feature: 14357617
+    dragon-death-sound-radius: 0
+    max-entity-collisions: 8
+    max-tick-time:
+      tile: 50
+      entity: 50
+    save-structure-info: true
+    growth:
+      cactus-modifier: 0
+      cane-modifier: 0
+      melon-modifier: 0
+      mushroom-modifier: 0
+      pumpkin-modifier: 0
+      sapling-modifier: 0
+      wheat-modifier: 0
+      netherwart-modifier: 0
+    entity-activation-range:
+      animals: 0
+      monsters: 0
+      misc: 0
+    hunger:
+      walk-exhaustion: 0.2
+      sprint-exhaustion: 0.8
+      combat-exhaustion: 0.3
+      regen-exhaustion: 3.0
+    entity-tracking-range:
+      players: 48
+      animals: 32
+      monsters: 32
+      misc: 16
+      other: 64
+    ticks-per:
+      hopper-transfer: 8
+      hopper-check: 8
+    hopper-amount: 1
+    max-bulk-chunks: 10
+    max-tnt-per-tick: 100
+    random-light-updates: false
+    nerf-spawner-mobs: false
+    mob-spawn-range: 0
+    anti-xray:
+      enabled: false
+      engine-mode: 1
+      hide-blocks:
+      - 14
+      - 15
+      - 16
+      - 21
+      - 48
+      - 49
+      - 54
+      - 56
+      - 73
+      - 74
+      - 82
+      - 129
+      - 130
+      replace-blocks:
+      - 1
+      - 5
+timings:
+  enabled: true
+  verbose: true
+  server-name-privacy: true
+  hidden-config-entries:
+  - database
+  - settings.bungeecord-addresses
+  history-interval: 300
+  history-length: 3600

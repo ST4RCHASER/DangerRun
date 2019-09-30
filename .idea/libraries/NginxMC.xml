@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="NginxMC">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../NginxMC/out/artifacts/NginxMC_Master/NginxMC.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
