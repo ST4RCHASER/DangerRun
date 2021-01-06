@@ -1,3 +1,3 @@
 # DangerRun
-SIAMCRAFT DANGERRUN PROTECT
-A SIMPLE MINIGAMES IN SIAMCRAFTSERVER
+ minecraft danger run minigames multi lobby support
+ use in siamcraft.net @2018
