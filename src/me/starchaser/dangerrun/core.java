@@ -1,6 +1,5 @@
 package me.starchaser.dangerrun;
 
-import me.starchaser.nginxmc.api.NginxAPI;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -26,12 +25,10 @@ public class core extends JavaPlugin implements Listener {
     public static World game_world,main_world;
     public static Location game_loc,main_loc;
     public static Plugin wgd;
-    public static NginxAPI nginxAPI;
     public static String path;
     @Override
     public void onEnable() {
         path = this.getDataFolder().getAbsoluteFile().getParentFile().getParentFile().getAbsolutePath() + File.separator;
-        nginxAPI = new NginxAPI(this);
         wgd = getServer().getPluginManager().getPlugin("WorldGuard");
         getDangerRun = this;
         arenas = new ArrayList<>();
@@ -55,7 +52,7 @@ public class core extends JavaPlugin implements Listener {
                     return;
                 }
                 game_loc = new Location(game_world, -10,21,68,180,0);
-                main_loc = new Location(main_world, 43 ,66 ,34 , 180 , 0);
+                main_loc = new Location(main_world, 43 ,71 ,34 , 180 , 0);
             }
         }.runTask(this);
         Bukkit.getPluginManager().registerEvents(new evt(), this);
@@ -212,7 +209,7 @@ public class core extends JavaPlugin implements Listener {
                         public void run() {
                             counting--;
                             for (Player p : Bukkit.getOnlinePlayers()) {
-                                p.playSound(p.getLocation() , Sound.UI_BUTTON_CLICK , 1 , 1);
+                                p.playSound(p.getLocation() , Sound.CLICK , 1 , 1);
                             }
                         Bukkit.broadcastMessage("§7DangerRun: §aRun!!! §c" + counting);
                         if (counting < 1) {
@@ -220,7 +217,7 @@ public class core extends JavaPlugin implements Listener {
                             Material[] mat = {Material.AIR};
                             starchaser.setBlocks(sel, mat, new ArrayList<Player>(Arrays.asList(Bukkit.getPlayer(sender.getName()))) );
                             for (Player p : Bukkit.getOnlinePlayers()) {
-                                p.playSound(p.getLocation() , Sound.ENTITY_ENDERMAN_HURT , 1 , 1);
+                                p.playSound(p.getLocation() , Sound.ENDERMAN_HIT , 1 , 1);
                             }
                             this.cancel();
                         }

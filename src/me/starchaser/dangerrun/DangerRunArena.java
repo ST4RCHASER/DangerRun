@@ -1,9 +1,9 @@
 package me.starchaser.dangerrun;
 
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.RegionContainer;
+import com.sk89q.worldguard.bukkit.RegionQuery;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.*;
 import org.bukkit.entity.Item;
@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.Random;
 
 import static me.starchaser.dangerrun.core.getDangerRun;
-import static me.starchaser.dangerrun.core.nginxAPI;
 
 public class DangerRunArena {
     enum GameState {
@@ -74,15 +73,15 @@ public class DangerRunArena {
                         CountDownTimer--;
                         if (CountDownTimer == 30) {
                             BCMessage("§7DangerRun: §aMatch has start in 30 secs...");
-                            BCSound(Sound.UI_BUTTON_CLICK);
+                            BCSound(Sound.CLICK);
                         }
                         if (CountDownTimer == 20) {
                             BCMessage("§7DangerRun: §aMatch has start in 20 secs...");
-                            BCSound(Sound.UI_BUTTON_CLICK);
+                            BCSound(Sound.CLICK);
                         }
                         if (CountDownTimer < 11 && CountDownTimer > 0) {
                             BCMessage("§7DangerRun: §aMatch has start in " + CountDownTimer + " secs...");
-                            BCSound(Sound.UI_BUTTON_CLICK);
+                            BCSound(Sound.CLICK);
                         }
                         if (CountDownTimer <= 0) {
                             BCMessage("§7DangerRun: §eStarting game, Pleasewait!");
@@ -107,13 +106,16 @@ public class DangerRunArena {
                         return;
                     }
                     if (countdown_run < 1) {
-                        BCSound(Sound.ENTITY_ENDER_DRAGON_HURT);
+                        BCSound(Sound.ENDERDRAGON_HIT);
                         starchaser.setBlocks(sel, new Material[]{Material.AIR , Material.AIR} , players);
                         //PacketBlockMaker(sel, new Material[]{Material.AIR, Material.AIR});
                         for (Player pp : getPlayersAlive()) {
                             pp.getInventory().clear();
                             WorldGuardPlugin wg = (WorldGuardPlugin) core.wgd;
-                            for (ProtectedRegion r : WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(pp.getWorld())).getApplicableRegions(BlockVector3.at(pp.getLocation().getX(), pp.getLocation().getY(), pp.getLocation().getZ()))) {
+                            RegionContainer container = wg.getRegionContainer();
+                            RegionQuery query = container.createQuery();
+                            ApplicableRegionSet set = query.getApplicableRegions(pp.getLocation());
+                            for (ProtectedRegion r : set) {
                                 if (!r.getId().equalsIgnoreCase("runner_" + current_side) && !r.getId().equalsIgnoreCase("game_arena") && !r.getId().equalsIgnoreCase("run_arena")) {
                                     pp.teleport(new Location(core.game_world, -10, 10, 40));
                                 }
@@ -139,7 +141,7 @@ public class DangerRunArena {
                             stage_count++;
                             countdown_run--;
                             if (stage_count >= stage.size()) {
-                                BCSound(Sound.ENTITY_PLAYER_LEVELUP);
+                                BCSound(Sound.LEVEL_UP);
                                 setGameState(GameState.END);
                                 BCMessage("§2====================================================");
                                 BCMessage("§r");
@@ -151,7 +153,6 @@ public class DangerRunArena {
                                     YamlReader reader = new YamlReader(core.path + ".mc-deluxe/dangerrun.yml");
                                     reader.set("players." + winner.getName() + ".solo_win", reader.getInt("players." + winner.getName() + ".solo_win") + 1);
                                     getDBXP(winner).put_new("Win", 300);
-                                    getDBXP(winner).TaskGive();
                                 }
                                 BCMessage(winner_players + "§a is a winner!");
                                 BCMessage("§r");
@@ -161,7 +162,7 @@ public class DangerRunArena {
                                 return;
                             }
                             if (getPlayersAlive().size() == 1) {
-                                BCSound(Sound.ENTITY_PLAYER_LEVELUP);
+                                BCSound(Sound.LEVEL_UP);
                                 setGameState(GameState.END);
                                 BCMessage("§2====================================================");
                                 BCMessage("§r");
@@ -170,7 +171,6 @@ public class DangerRunArena {
                                 String winner_players = "§b§l" + getPlayersAlive().get(0).getName();
                                 BCMessage(winner_players + "§a is a winner!");
                                 getDBXP(getPlayersAlive().get(0)).put_new("Win", 300);
-                                getDBXP(getPlayersAlive().get(0)).TaskGive();
                                 YamlReader reader = new YamlReader(core.path + ".mc-deluxe/dangerrun.yml");
                                 reader.set("players." + getPlayersAlive().get(0).getName() + ".solo_win", reader.getInt("players." + getPlayersAlive().get(0).getName() + ".solo_win") + 1);
                                 BCMessage("§r");
@@ -180,7 +180,7 @@ public class DangerRunArena {
                                 return;
                             }
                             if (getPlayersAlive().size() < 1) {
-                                BCSound(Sound.ENTITY_PLAYER_LEVELUP);
+                                BCSound(Sound.LEVEL_UP);
                                 setGameState(GameState.END);
                                 BCMessage("§2====================================================");
                                 BCMessage("§r");
@@ -193,7 +193,7 @@ public class DangerRunArena {
                                 cooldown_wait = 6;
                                 return;
                             }
-                            BCSound(Sound.BLOCK_NOTE_BLOCK_PLING);
+                            BCSound(Sound.NOTE_PLING);
 //                            ItemStack is = new ItemStack(Material.STONE_BUTTON);
 //                            ItemMeta im = is.getItemMeta();
 //                            im.setDisplayName("§a§lRun!!");
@@ -217,7 +217,7 @@ public class DangerRunArena {
                                 }
                             }.runTaskLaterAsynchronously(getDangerRun, 20L);
                         } else {
-                            BCSound(Sound.BLOCK_NOTE_BLOCK_PLING);
+                            BCSound(Sound.NOTE_PLING);
                             countdown_run--;
                         }
                     }
@@ -312,7 +312,10 @@ public class DangerRunArena {
         ArrayList alive = new ArrayList();
         for (Player target : getPlayers()) {
             WorldGuardPlugin wg = (WorldGuardPlugin) core.wgd;
-            for (ProtectedRegion r : WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(target.getWorld())).getApplicableRegions(BlockVector3.at(target.getLocation().getX(), target.getLocation().getY(), target.getLocation().getZ()))) {
+            RegionContainer container = wg.getRegionContainer();
+            RegionQuery query = container.createQuery();
+            ApplicableRegionSet set = query.getApplicableRegions(target.getLocation());
+            for (ProtectedRegion r : set) {
                 if (r.getId().equalsIgnoreCase("game_arena")) {
                     alive.add(target);
                 }
@@ -339,23 +342,23 @@ public class DangerRunArena {
         stage.add(mat);
 
         //STAGE: 1
-        mat = new Material[]{Material.GRASS_BLOCK, Material.DIRT, Material.AIR};
+        mat = new Material[]{Material.GRASS, Material.DIRT, Material.AIR};
         stage.add(mat);
 
         //STAGE: 3
-        mat = new Material[]{Material.GRASS_BLOCK, Material.DIRT, Material.COBBLESTONE, Material.AIR, Material.AIR};
+        mat = new Material[]{Material.GRASS, Material.DIRT, Material.COBBLESTONE, Material.AIR, Material.AIR};
         stage.add(mat);
 
         //STAGE: 4
-        mat = new Material[]{Material.GRASS_BLOCK, Material.DIRT, Material.COBBLESTONE, Material.AIR, Material.AIR, Material.AIR, Material.AIR};
+        mat = new Material[]{Material.GRASS, Material.DIRT, Material.COBBLESTONE, Material.AIR, Material.AIR, Material.AIR, Material.AIR};
         stage.add(mat);
 
         //STAGE: 5
-        mat = new Material[]{Material.GRASS_BLOCK, Material.DIRT, Material.COBBLESTONE, Material.OAK_WOOD, Material.AIR, Material.AIR, Material.AIR, Material.AIR, Material.AIR};
+        mat = new Material[]{Material.GRASS, Material.DIRT, Material.COBBLESTONE, Material.WOOD, Material.AIR, Material.AIR, Material.AIR, Material.AIR, Material.AIR};
         stage.add(mat);
 
         //STAGE: 6
-        mat = new Material[]{Material.GRASS_BLOCK, Material.DIRT, Material.OAK_LEAVES, Material.OAK_WOOD, Material.AIR, Material.AIR, Material.AIR, Material.AIR, Material.AIR};
+        mat = new Material[]{Material.GRASS, Material.DIRT, Material.LEAVES, Material.WOOD, Material.AIR, Material.AIR, Material.AIR, Material.AIR, Material.AIR};
         stage.add(mat);
 
         //STAGE: 7
@@ -399,11 +402,11 @@ public class DangerRunArena {
         stage.add(mat);
 
         //STAGE: 17
-        mat = new Material[]{Material.REDSTONE_BLOCK, Material.MOVING_PISTON, Material.OAK_STAIRS, Material.PACKED_ICE, Material.AIR, Material.AIR, Material.AIR, Material.AIR, Material.AIR, Material.AIR, Material.AIR};
+        mat = new Material[]{Material.REDSTONE_BLOCK, Material.PISTON_MOVING_PIECE, Material.WOOD_STAIRS, Material.PACKED_ICE, Material.AIR, Material.AIR, Material.AIR, Material.AIR, Material.AIR, Material.AIR, Material.AIR};
         stage.add(mat);
 
         //STAGE: 17
-        mat = new Material[]{Material.REDSTONE_BLOCK, Material.MOVING_PISTON, Material.OAK_STAIRS, Material.DARK_OAK_FENCE, Material.AIR, Material.AIR, Material.AIR, Material.AIR, Material.AIR, Material.AIR, Material.AIR};
+        mat = new Material[]{Material.REDSTONE_BLOCK, Material.PISTON_MOVING_PIECE, Material.WOOD_STAIRS, Material.DARK_OAK_FENCE, Material.AIR, Material.AIR, Material.AIR, Material.AIR, Material.AIR, Material.AIR, Material.AIR};
         stage.add(mat);
 
     }
@@ -469,7 +472,7 @@ public class DangerRunArena {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        starchaser.setBlocks(sel , new Material[]{Material.GRASS_BLOCK, Material.DIRT, Material.COBBLESTONE, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER} , players);
+                        starchaser.setBlocks(sel , new Material[]{Material.GRASS, Material.DIRT, Material.COBBLESTONE, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER, Material.BARRIER} , players);
                     }
                 }.runTaskLaterAsynchronously(getDangerRun , 5L);
                 cooldown_map = false;
@@ -592,30 +595,6 @@ public class DangerRunArena {
             }else {
                 xp_table.put(data , xp);
             }
-        }
-        public void TaskGive() {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (getDBXP(player).xp_table.keySet().size() > 0) {
-                        player.playSound(player.getLocation() , Sound.ENTITY_PLAYER_LEVELUP , 1 , 1);
-                        player.sendMessage("§b§m------------------------------------------");
-                        player.sendMessage("§f  XP Gained");
-                        int xp_gained = 0;
-                        player.sendMessage("§r");
-                        for (String str_value : getDBXP(player).xp_table.keySet()) {
-                            player.sendMessage("§d " + str_value + " §f: §e" + getDBXP(player).xp_table.get(str_value) + "XP");
-                            xp_gained = xp_gained + getDBXP(player).xp_table.get(str_value);
-                        }
-                        player.sendMessage("§r");
-                        player.sendMessage("§f  Total: §a" + xp_gained + " §fXP" + " §6" + xp_gained/5 + "§f Coins");
-                        nginxAPI.getNginxPlayer(player).addCoins(xp_gained/4, false);
-                        nginxAPI.getNginxPlayer(player).getLevel().give_xp(xp_gained, false);
-                        player.sendMessage("§b§m------------------------------------------");
-                    }
-                    clean();
-                }
-            }.runTaskLater(core.getDangerRun , 20L);
         }
     }
 }

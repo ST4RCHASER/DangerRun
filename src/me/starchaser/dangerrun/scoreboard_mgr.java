@@ -1,6 +1,5 @@
 package me.starchaser.dangerrun;
 
-import me.starchaser.nginxmc.api.NginxAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -15,7 +14,6 @@ public class scoreboard_mgr {
             @Override
             public void run() {
                 for (Player p : Bukkit.getOnlinePlayers()){
-                    if (core.nginxAPI.getNginxPlayer(p) != null) {
                         ScoreboardManager manager = Bukkit.getScoreboardManager();
                         Scoreboard board = manager.getNewScoreboard();
                         Objective objective = board.registerNewObjective("dr_board", "dummy");
@@ -39,7 +37,7 @@ public class scoreboard_mgr {
                                 objective.getScore("§r").setScore(4);
                                 objective.getScore("RoomID: §d" + dangerRunArena.getMatchID()).setScore(3);
                                 objective.getScore("§r§r§r").setScore(2);
-                                objective.getScore("§b✎ §esiamcraft.net").setScore(1);
+                                objective.getScore("§b✎ §emc.starchaser.me").setScore(1);
                             }
                             if (dangerRunArena.getGameState() == DangerRunArena.GameState.RUNNING) {
                                 objective.getScore("§r§a§r").setScore(11);
@@ -52,7 +50,7 @@ public class scoreboard_mgr {
                                 objective.getScore("§r").setScore(4);
                                 objective.getScore("RoomID: §d" + dangerRunArena.getMatchID()).setScore(3);
                                 objective.getScore("§r§r§r").setScore(2);
-                                objective.getScore("§b✎ §esiamcraft.net").setScore(1);
+                                objective.getScore("§b✎ §emc.starchaser.me").setScore(1);
                             }
                         }else {
                             objective.getScore("§r").setScore(10);
@@ -66,14 +64,15 @@ public class scoreboard_mgr {
                             }.runTaskAsynchronously(core.getDangerRun);
                             objective.getScore("Team Wins: §a0").setScore(7);
                             objective.getScore("§r§r").setScore(6);
-                            objective.getScore("Coins: §6" + core.nginxAPI.getNginxPlayer(p).getCoins()).setScore(5);
-                            objective.getScore("Levels: §r" + core.nginxAPI.getNginxPlayer(p).getLevel().getStr()).setScore(4);
-                            objective.getScore("XP: §b"+core.nginxAPI.getNginxPlayer(p).getLevel().getXP()+"/"+core.nginxAPI.getNginxPlayer(p).getLevel().getMaxXP()).setScore(3);
-                            objective.getScore("§r§r§r").setScore(2);
-                            objective.getScore("§b✎ §esiamcraft.net").setScore(1);
+                            objective.getScore("§7Auto join:").setScore(5);
+                            objective.getScore("§b/dr join").setScore(4);
+                            objective.getScore("§7Join with room id:").setScore(3);
+                            objective.getScore("§b/dr join <id>").setScore(2);
+                            objective.getScore("§r§r§r").setScore(1);
+                            objective.getScore("§b✎ §emc.starchaser.me").setScore(1);
+                            objective.getScore("§b✎ §emc.starchaser.me").setScore(0);
                         }
                         p.setScoreboard(board);
-                    }
                 }
             }
         }.runTaskTimer(plugin , 5 , 5);

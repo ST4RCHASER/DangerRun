@@ -1,11 +1,10 @@
 package me.starchaser.dangerrun;
 
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.RegionContainer;
+import com.sk89q.worldguard.bukkit.RegionQuery;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import me.starchaser.nginxmc.bukkit.NginxPlayer;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -29,6 +28,17 @@ public class evt implements Listener {
         if (starchaser.getDangerRunArena(evt.getPlayer()) != null) {
             starchaser.getDangerRunArena(evt.getPlayer()).LeaveArena(evt.getPlayer());
         }
+    }
+
+    //On player join teleport to main_loc
+    @EventHandler
+    public void onJoin(PlayerJoinEvent evt){
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                evt.getPlayer().teleport(core.main_loc);
+            }
+        }.runTaskLater(core.getDangerRun , 20L);
     }
     @EventHandler
     public void PlayerInteract(PlayerInteractEvent evt) {
@@ -85,7 +95,10 @@ public class evt implements Listener {
                 }else if (dangerRunArena.getGameState() == DangerRunArena.GameState.RUNNING) {
                     if (dangerRunArena.first_runner == null) {
                         WorldGuardPlugin wg = (WorldGuardPlugin) core.wgd;
-                        for(ProtectedRegion r : WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(p.getWorld())).getApplicableRegions(BlockVector3.at(p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ()))) {
+                        RegionContainer container = wg.getRegionContainer();
+                        RegionQuery query = container.createQuery();
+                        ApplicableRegionSet set = query.getApplicableRegions(p.getLocation());
+                        for(ProtectedRegion r : set) {
                                 String swith_side;
                                 if (dangerRunArena.current_side.equalsIgnoreCase("A")) {
                                     swith_side = "B";
@@ -94,7 +107,7 @@ public class evt implements Listener {
                                 }
                                 if (r.getId().equalsIgnoreCase("runner_" + dangerRunArena.current_side) && dangerRunArena.getStage_count() > -1) {
                                     dangerRunArena.BCMessage("§7DangerRun: §aผู้เล่น §f" + p.getName() + "§a ถึงอีกฝั่งเป็นคนแรก!");
-                                    dangerRunArena.BCSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+                                    dangerRunArena.BCSound(Sound.ORB_PICKUP);
                                     dangerRunArena.getDBXP(p).put_new("Fastest Player" , 50);
                                     dangerRunArena.first_runner = p;
                                 }
@@ -107,7 +120,6 @@ public class evt implements Listener {
                             p.setGameMode(GameMode.ADVENTURE);
                             p.getInventory().clear();
                             p.updateInventory();
-                            getDangerRunArena(p).getDBXP(p).TaskGive();
                             dangerRunArena.giveExitItem(p);
                             new BukkitRunnable() {
                                 @Override
@@ -122,7 +134,7 @@ public class evt implements Listener {
                 }
             }
         }else if (p.getWorld().equals(core.main_world)) {
-            if (p.getLocation().getBlock() != null && p.getLocation().getBlock().getType().equals(Material.END_PORTAL)) {
+            if (p.getLocation().getBlock() != null && p.getLocation().getBlock().getType().equals(Material.ENDER_PORTAL)) {
                 if (starchaser.getDangerRunArena(p) != null) {
                     p.sendMessage("§7DangerRun: §cYou already in match!");
                 }else {
@@ -138,17 +150,16 @@ public class evt implements Listener {
     @EventHandler
     public void PlayerChat(PlayerChatEvent e){
         e.setCancelled(true);
-            NginxPlayer nginxPlayer = core.nginxAPI.getNginxPlayer(e.getPlayer());
             if (starchaser.getDangerRunArena(e.getPlayer()) != null) {
-                Bukkit.getConsoleSender().sendMessage("§b§l" + starchaser.getDangerRunArena(e.getPlayer()).getMatchID() + " §8- §f"+nginxPlayer.getLevel().getStr()+" §8- §r"+nginxPlayer.getTitle().getStr()+nginxPlayer.getPlayerClass().getStr()+"§7"+nginxPlayer.getName()+":§b "+e.getMessage()+"");
+                Bukkit.getConsoleSender().sendMessage("§b§l" + starchaser.getDangerRunArena(e.getPlayer()).getMatchID() + " §8- §7"+e.getPlayer().getName()+":§b "+e.getMessage()+"");
                 for (Player abc : starchaser.getDangerRunArena(e.getPlayer()).getPlayers()) {
-                    abc.sendMessage("§8। §f"+nginxPlayer.getLevel().getStr()+" §8। §r"+nginxPlayer.getTitle().getStr()+nginxPlayer.getPlayerClass().getStr()+"§7"+nginxPlayer.getName()+":§b "+e.getMessage()+"");
+                    abc.sendMessage("§7"+e.getPlayer().getName()+":§b "+e.getMessage()+"");
                 }
             }else {
-                Bukkit.getConsoleSender().sendMessage("§b§lLOBBY §8। §f"+nginxPlayer.getLevel().getStr()+" §8। §r"+nginxPlayer.getTitle().getStr()+nginxPlayer.getPlayerClass().getStr()+"§7"+nginxPlayer.getName()+":§b "+e.getMessage()+"");
+                Bukkit.getConsoleSender().sendMessage("§b§lLOBBY §8। §7"+e.getPlayer().getName()+":§b "+e.getMessage()+"");
                 for (Player p : Bukkit.getOnlinePlayers()) {
                     if (p.getWorld().equals(core.main_world)) {
-                        p.sendMessage("§8। §f"+nginxPlayer.getLevel().getStr()+" §8। §r"+nginxPlayer.getTitle().getStr()+nginxPlayer.getPlayerClass().getStr()+"§7"+nginxPlayer.getName()+":§b "+e.getMessage()+"");
+                        p.sendMessage("§7"+e.getPlayer().getName()+":§b "+e.getMessage()+"");
                     }
                 }
             }

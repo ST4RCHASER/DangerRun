@@ -62,7 +62,7 @@ locale: 'en-US'
 player-list:
 
   # Toggles this feature.
-  enabled: true
+  enabled: false
 
   # Sets the header of the player list.
   #
@@ -107,7 +107,7 @@ player-list:
 welcome-title:
 
   # Toggles this feature.
-  enabled: true
+  enabled: false
 
   # The title shown.
   title: 'Welcome to My Server'
@@ -144,7 +144,7 @@ welcome-title:
 welcome-actionbar:
 
   # Toggles this feature.
-  enabled: true
+  enabled: false
 
   # The message shown.
   title: 'Welcome to My Server'
@@ -166,7 +166,7 @@ placeholders:
   number-format:
 
     # Toggles this feature.
-    enabled: true
+    enabled: false
 
     # The format used.
     format: '#,###.##'
@@ -186,7 +186,7 @@ placeholders:
 scoreboard:
 
   # Toggles this feature
-  enabled: true
+  enabled: false
 
   # The title displayed at the very top of the scoreboard
   # WARNING! (1.12 or below ONLY) The title must consist of 32 or less characters (this includes color codes)
@@ -218,7 +218,7 @@ scoreboard:
 announcer:
 
   # Toggles this feature.
-  enabled: true
+  enabled: false
 
   # The announcements
   #
