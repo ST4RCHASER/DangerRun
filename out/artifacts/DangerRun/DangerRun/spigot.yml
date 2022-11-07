@@ -16,13 +16,11 @@ settings:
   save-user-cache-on-stop-only: false
   bungeecord: false
   late-bind: false
-  sample-count: 12
-  player-shuffle: 0
-  user-cache-size: 1000
-  netty-threads: 4
   timeout-time: 60
   restart-on-crash: true
   restart-script: 01.bat
+  player-shuffle: 0
+  sample-count: 12
   int-cache-limit: 1024
   attribute:
     maxHealth:
@@ -31,9 +29,20 @@ settings:
       max: 2048.0
     attackDamage:
       max: 2048.0
+  netty-threads: 4
+  user-cache-size: 1000
+  moved-too-quickly-threshold: 100.0
   filter-creative-items: true
   moved-wrongly-threshold: 0.0625
-  moved-too-quickly-threshold: 100.0
+timings:
+  enabled: true
+  verbose: true
+  server-name-privacy: true
+  hidden-config-entries:
+  - database
+  - settings.bungeecord-addresses
+  history-interval: 300
+  history-length: 3600
 commands:
   tab-complete: 0
   log: true
@@ -59,6 +68,9 @@ stats:
 world-settings:
   default:
     verbose: true
+    hanging-tick-frequency: 100
+    zombie-aggressive-towards-villager: false
+    arrow-despawn-rate: 1200
     merge-radius:
       item: 0
       exp: 0
@@ -66,19 +78,13 @@ world-settings:
     chunks-per-tick: 650
     clear-tick-list: false
     enable-zombie-pigmen-portal-spawns: false
-    arrow-despawn-rate: 1200
-    view-distance: 5
     wither-spawn-sound-radius: 0
-    hanging-tick-frequency: 100
-    zombie-aggressive-towards-villager: false
+    view-distance: 5
+    max-entity-collisions: 8
+    dragon-death-sound-radius: 0
     seed-village: 10387312
     seed-feature: 14357617
-    dragon-death-sound-radius: 0
-    max-entity-collisions: 8
-    max-tick-time:
-      tile: 50
-      entity: 50
-    save-structure-info: true
+    mob-spawn-range: 0
     growth:
       cactus-modifier: 0
       cane-modifier: 0
@@ -88,30 +94,6 @@ world-settings:
       sapling-modifier: 0
       wheat-modifier: 0
       netherwart-modifier: 0
-    entity-activation-range:
-      animals: 0
-      monsters: 0
-      misc: 0
-    hunger:
-      walk-exhaustion: 0.2
-      sprint-exhaustion: 0.8
-      combat-exhaustion: 0.3
-      regen-exhaustion: 3.0
-    entity-tracking-range:
-      players: 48
-      animals: 32
-      monsters: 32
-      misc: 16
-      other: 64
-    ticks-per:
-      hopper-transfer: 8
-      hopper-check: 8
-    hopper-amount: 1
-    max-bulk-chunks: 10
-    max-tnt-per-tick: 100
-    random-light-updates: false
-    nerf-spawner-mobs: false
-    mob-spawn-range: 0
     anti-xray:
       enabled: false
       engine-mode: 1
@@ -132,12 +114,30 @@ world-settings:
       replace-blocks:
       - 1
       - 5
-timings:
-  enabled: true
-  verbose: true
-  server-name-privacy: true
-  hidden-config-entries:
-  - database
-  - settings.bungeecord-addresses
-  history-interval: 300
-  history-length: 3600
+    entity-activation-range:
+      animals: 0
+      monsters: 0
+      misc: 0
+    max-tnt-per-tick: 100
+    entity-tracking-range:
+      players: 48
+      animals: 32
+      monsters: 32
+      misc: 16
+      other: 64
+    hunger:
+      walk-exhaustion: 0.2
+      sprint-exhaustion: 0.8
+      combat-exhaustion: 0.3
+      regen-exhaustion: 3.0
+    max-tick-time:
+      tile: 50
+      entity: 50
+    ticks-per:
+      hopper-transfer: 8
+      hopper-check: 8
+    hopper-amount: 1
+    random-light-updates: false
+    save-structure-info: true
+    max-bulk-chunks: 10
+    nerf-spawner-mobs: false
